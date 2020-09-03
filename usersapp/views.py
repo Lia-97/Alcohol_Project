@@ -8,8 +8,8 @@ from usersapp.models import Users
 def login(request):
     context = {}
     if request.method == 'POST':
-        useremail = request.POST.get('email')
-        password = request.POST.get('password')
+        useremail = request.POST.get('email',None)
+        password = request.POST.get('password',None)
         try:
             user = Users.objects.get(useremail=useremail)
         except Users.DoesNotExist:
@@ -28,20 +28,21 @@ def login(request):
 
 def register(request):
     if request.method == "POST":
-        if request.POST.get['password'] ==request.POST.get['re_password']:
-            useremail = request.POST.get('email', None)
-            username = request.POST.get('name', None)
-            password = request.POST.get('password', None)
-            users = Users(
-                useremail=useremail,
+        username=request.POST.get('name',None)
+        useremail=request.POST.get('email',None)
+        password=request.POST.get('password',None)
+        re_password=request.POST.get('re_password',None)
+        context={}
+        if password != re_password:
+            context['error']='비밀번호가 일치하지 않습니다.'
+            return render(request,'register.html',context)
+        else:
+            users=Users(
                 username=username,
+                useremail=useremail,
                 password=make_password(password)
             )
             users.save()
-            return render(request, 'login.html')
-        else:
-            context = {}
-            context['error']='비밀번호가 일치하지 않습니다.'
-            return render(request, 'register.html',context)
+            return render(request,'login.html')
     else:
         return render(request,'register.html')
