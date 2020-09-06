@@ -32,7 +32,18 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'usersapp:login' %}">Log in</a></li>
+                        <div id="container">
+                        {% if user_name %}
+                            <li><a href="#" onclick="return false" style="text-decoration:none;">{{user_name}}님!</a>
+                                <ul>
+                                    <li style="color:white;">내 정보</li>
+                                    <a href="{% url 'logout' %}"><li style="color:white;">Log out</li></a>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'usersapp:login' %}">Log in</a></li>
+                        {% endif %}
+                        </div>
                     </ul>
                 </div>
             </div>

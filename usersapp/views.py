@@ -18,8 +18,9 @@ def login(request):
         else:
             user_name=user.username
             if check_password(password, user.password):
+                request.session['email']=useremail
                 request.session['user'] = user_name
-                return redirect('mainapp/index/')
+                return redirect('/mainapp/index/')
             else:
                 context['error']='아이디 또는 비밀번호가 일치하지 않습니다.'
                 return render(request, 'login.html', context)
